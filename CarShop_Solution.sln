@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShop_Console", "CarShop_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShop_Library", "CarShop_Library\CarShop_Library.csproj", "{9F80A11C-353B-4621-B548-C02854636CCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShop_WinForm", "CarShop_WinForm\CarShop_WinForm.csproj", "{B5889F1D-60C1-404D-9A91-2E090A49B77D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9F80A11C-353B-4621-B548-C02854636CCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F80A11C-353B-4621-B548-C02854636CCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F80A11C-353B-4621-B548-C02854636CCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5889F1D-60C1-404D-9A91-2E090A49B77D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5889F1D-60C1-404D-9A91-2E090A49B77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5889F1D-60C1-404D-9A91-2E090A49B77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5889F1D-60C1-404D-9A91-2E090A49B77D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
