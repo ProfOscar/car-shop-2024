@@ -14,12 +14,14 @@ namespace CarShop_Console
             // string myName = "Oscar";
             // Console.WriteLine(ClassTest.HelloWorld(myName));
 
-            Veicolo v = new Auto("BMW", "Serie 3", "FE518TW", new DateTime(2015, 10, 24), 19000, 5, true);
+            Veicolo v = new Auto("BMW", "Serie 3", "FE518TW", new DateTime(2015, 10, 24), 19000, 
+                TipoAlimentazione.Benzina, 5, true);
             Console.WriteLine(v);
 
             Console.WriteLine();
 
-            v = new Moto("Ducati", "Diavolo Rosso", "EH654TY", new DateTime(2022, 7, 10), 8500, 4, false);
+            v = new Moto("Ducati", "Diavolo Rosso", "EH654TY", new DateTime(2022, 7, 10), 8500, 
+                TipoMoto.Enduro, 4, false);
             Console.WriteLine(v);
 
             Console.WriteLine();
