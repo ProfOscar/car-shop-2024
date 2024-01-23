@@ -21,15 +21,13 @@ namespace CarShop_Console
                 switch (scelta)
                 {
                     case '1':
-                        Elenco(ParcoMezzi, "VEICOLI");
+                        Elenco<Veicolo>();
                         break;
                     case '2':
-                        List<Veicolo> filteredAuto = ParcoMezzi.FindAll(element => element is Auto);
-                        Elenco(filteredAuto, "AUTO");
+                        Elenco<Auto>();
                         break;
                     case '3':
-                        List<Veicolo> filteredMoto = ParcoMezzi.FindAll(element => element is Moto);
-                        Elenco(filteredMoto, "MOTO");
+                        Elenco<Moto>();
                         break;
                     default:
                         break;
@@ -48,17 +46,19 @@ namespace CarShop_Console
             return Console.ReadKey(true).KeyChar;
         }
 
-        private static void Elenco(List<Veicolo> filteredItems, string vehicleType)
+        private static void Elenco<T>()
         {
             Console.Clear();
-            Console.WriteLine($"*** ELENCO {vehicleType} ***");
+            string typeName = typeof(T).Name.ToUpper();
+            Console.WriteLine($"*** ELENCO {typeName} ***");
             int conta = 0;
+            List<Veicolo> filteredItems = ParcoMezzi.FindAll(element => element is T);
             foreach (var item in filteredItems)
             {
                 conta++;
                 Console.WriteLine($"\n{conta} - {item}");
             }
-            Console.WriteLine($"\n\nTOT: {conta} {vehicleType}");
+            Console.WriteLine($"\n\nTOT: {conta} {typeName}");
             Console.ReadKey(true);
         }
 
