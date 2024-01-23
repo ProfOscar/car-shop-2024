@@ -19,8 +19,8 @@ namespace CarShop_Library
 
     public class Auto : Veicolo
     {
-        public Auto(string marca, string modello, string targa, DateTime dtImmatricolazione, int prezzo,
-            TipoAlimentazione alimentazione, int numPorte, bool isTettoPanoramico):base(marca, modello, targa, dtImmatricolazione, prezzo)
+        public Auto(string marca, string modello, string targa, DateTime dtImmatricolazione, int prezzo, string image,
+            TipoAlimentazione alimentazione, int numPorte, bool isTettoPanoramico):base(marca, modello, targa, dtImmatricolazione, prezzo, image)
         {
             Alimentazione = alimentazione;
             NumPorte = numPorte;

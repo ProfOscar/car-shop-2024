@@ -64,18 +64,18 @@ namespace CarShop_Console
 
         private static void CreaDatiDiProva()
         {
-            Veicolo v = new Auto("BMW", "Serie 3", "FE518TW", new DateTime(2015, 10, 24), 19000,
+            Veicolo v = new Auto("BMW", "Serie 3", "FE518TW", new DateTime(2015, 10, 24), 19000, "",
                 TipoAlimentazione.Benzina, 5, true);
             ParcoMezzi.Add(v);
-            v = new Auto("Mercedes", "CLA", "GA331LD", new DateTime(2022, 2, 15), 38000,
+            v = new Auto("Mercedes", "CLA", "GA331LD", new DateTime(2022, 2, 15), 38000, "",
                 TipoAlimentazione.Diesel, 5, false);
             ParcoMezzi.Add(v);
 
-            v = new Moto("Ducati", "Diavolo Rosso", "EH654TY", new DateTime(2022, 7, 10), 8500,
+            v = new Moto("Ducati", "Diavolo Rosso", "EH654TY", new DateTime(2022, 7, 10), 8500, "",
                 TipoMoto.Enduro, 4, false);
             ParcoMezzi.Add(v);
 
-            v = new Furgone("FIAT", "Ducato", "E451UF", new DateTime(2007, 3, 11), 4200, 12000);
+            v = new Furgone("FIAT", "Ducato", "E451UF", new DateTime(2007, 3, 11), 4200, "", 12000);
             ParcoMezzi.Add(v);
         }
     }

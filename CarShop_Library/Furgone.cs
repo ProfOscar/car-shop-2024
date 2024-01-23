@@ -8,8 +8,8 @@ namespace CarShop_Library
 {
     public class Furgone : Veicolo
     {
-        public Furgone(string marca, string modello, string targa, DateTime dtImmatricolazione, int prezzo,
-            int portata) : base(marca, modello, targa, dtImmatricolazione, prezzo)
+        public Furgone(string marca, string modello, string targa, DateTime dtImmatricolazione, int prezzo, string image,
+            int portata) : base(marca, modello, targa, dtImmatricolazione, prezzo, image)
         {
             Portata = portata;
         }

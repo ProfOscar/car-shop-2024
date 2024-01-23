@@ -18,8 +18,8 @@ namespace CarShop_Library
 
     public class Moto : Veicolo
     {
-        public Moto(string marca, string modello, string targa, DateTime dtImmatricolazione, int prezzo,
-            TipoMoto tipo, int numTempi, bool isBauletto): base(marca, modello, targa, dtImmatricolazione, prezzo)
+        public Moto(string marca, string modello, string targa, DateTime dtImmatricolazione, int prezzo, string image,
+            TipoMoto tipo, int numTempi, bool isBauletto): base(marca, modello, targa, dtImmatricolazione, prezzo, image)
         {
             Tipo = tipo;
             NumTempi = numTempi;
