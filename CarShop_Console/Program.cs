@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CarShop_Console
@@ -20,6 +21,14 @@ namespace CarShop_Console
                 scelta = ScriviMenu();
                 switch (scelta)
                 {
+                    case 'c':
+                    case 'C':
+                        CaricaDati();
+                        break;
+                    case 's':
+                    case 'S':
+                        SalvaDati();
+                        break;
                     case '1':
                         Elenco<Veicolo>();
                         break;
@@ -35,14 +44,35 @@ namespace CarShop_Console
             }
         }
 
+        private static void SalvaDati()
+        {
+            if (JsonTools.SalvaDati(ParcoMezzi))
+                Console.WriteLine("\n*** SCRITTURA DATI OK ***");
+            else
+                Console.WriteLine("\n*** PROBLEMI SU SCRITTURA DATI ***");
+            // Thread.Sleep(2000);
+            Console.ReadKey(true);
+            Console.Clear();
+        }
+
+        private static void CaricaDati()
+        {
+            throw new NotImplementedException();
+        }
+
         private static char ScriviMenu()
         {
             Console.Clear();
             Console.WriteLine("*** GESTIONE RIVENDITA VEICOLI ***");
+            Console.WriteLine("".PadLeft(34, '-'));
+            Console.WriteLine("C - CARICA Dati");
+            Console.WriteLine("S - SALVA Dati");
+            Console.WriteLine("".PadLeft(34, '-'));
             Console.WriteLine("1 - Visualizza TUTTI");
             Console.WriteLine("2 - Visualizza AUTO");
             Console.WriteLine("3 - Visualizza MOTO");
-            Console.WriteLine("\nQ - ESCI");
+            Console.WriteLine("".PadLeft(34, '-'));
+            Console.WriteLine("Q - ESCI");
             return Console.ReadKey(true).KeyChar;
         }
 
