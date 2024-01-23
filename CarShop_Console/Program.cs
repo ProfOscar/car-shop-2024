@@ -35,20 +35,54 @@ namespace CarShop_Console
             }
         }
 
-        private static void ElencoMoto()
+        private static void ElencoVeicoli()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("*** ELENCO di TUTTI i VEICOLI ***");
+            int conta = 0;
+            foreach (var item in ParcoMezzi)
+            {
+                conta++;
+                Console.WriteLine($"\n{conta} - {item}");
+            }
+            Console.WriteLine($"\n\nTOT: {conta} VEICOLI");
+            Console.ReadKey(true);
         }
 
         private static void ElencoAuto()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("*** ELENCO delle AUTO ***");
+            int conta = 0;
+            foreach (var item in ParcoMezzi)
+            {
+                if (item is Auto)
+                {
+                    conta++;
+                    Console.WriteLine($"\n{conta} - {item}");
+                }
+            }
+            Console.WriteLine($"\n\nTOT: {conta} AUTO");
+            Console.ReadKey(true);
         }
 
-        private static void ElencoVeicoli()
+        private static void ElencoMoto()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("*** ELENCO delle MOTO ***");
+            int conta = 0;
+            foreach (var item in ParcoMezzi)
+            {
+                if (item is Moto)
+                {
+                    conta++;
+                    Console.WriteLine($"\n{conta} - {item}");
+                }
+            }
+            Console.WriteLine($"\n\nTOT: {conta} MOTO");
+            Console.ReadKey(true);
         }
+
 
         private static char ScriviMenu()
         {
