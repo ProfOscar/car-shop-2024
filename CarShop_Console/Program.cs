@@ -21,68 +21,21 @@ namespace CarShop_Console
                 switch (scelta)
                 {
                     case '1':
-                        ElencoVeicoli();
+                        Elenco(ParcoMezzi, "VEICOLI");
                         break;
                     case '2':
-                        ElencoAuto();
+                        List<Veicolo> filteredAuto = ParcoMezzi.FindAll(element => element is Auto);
+                        Elenco(filteredAuto, "AUTO");
                         break;
                     case '3':
-                        ElencoMoto();
+                        List<Veicolo> filteredMoto = ParcoMezzi.FindAll(element => element is Moto);
+                        Elenco(filteredMoto, "MOTO");
                         break;
                     default:
                         break;
                 }
             }
         }
-
-        private static void ElencoVeicoli()
-        {
-            Console.Clear();
-            Console.WriteLine("*** ELENCO di TUTTI i VEICOLI ***");
-            int conta = 0;
-            foreach (var item in ParcoMezzi)
-            {
-                conta++;
-                Console.WriteLine($"\n{conta} - {item}");
-            }
-            Console.WriteLine($"\n\nTOT: {conta} VEICOLI");
-            Console.ReadKey(true);
-        }
-
-        private static void ElencoAuto()
-        {
-            Console.Clear();
-            Console.WriteLine("*** ELENCO delle AUTO ***");
-            int conta = 0;
-            foreach (var item in ParcoMezzi)
-            {
-                if (item is Auto)
-                {
-                    conta++;
-                    Console.WriteLine($"\n{conta} - {item}");
-                }
-            }
-            Console.WriteLine($"\n\nTOT: {conta} AUTO");
-            Console.ReadKey(true);
-        }
-
-        private static void ElencoMoto()
-        {
-            Console.Clear();
-            Console.WriteLine("*** ELENCO delle MOTO ***");
-            int conta = 0;
-            foreach (var item in ParcoMezzi)
-            {
-                if (item is Moto)
-                {
-                    conta++;
-                    Console.WriteLine($"\n{conta} - {item}");
-                }
-            }
-            Console.WriteLine($"\n\nTOT: {conta} MOTO");
-            Console.ReadKey(true);
-        }
-
 
         private static char ScriviMenu()
         {
@@ -93,6 +46,20 @@ namespace CarShop_Console
             Console.WriteLine("3 - Visualizza MOTO");
             Console.WriteLine("\nQ - ESCI");
             return Console.ReadKey(true).KeyChar;
+        }
+
+        private static void Elenco(List<Veicolo> filteredItems, string vehicleType)
+        {
+            Console.Clear();
+            Console.WriteLine($"*** ELENCO {vehicleType} ***");
+            int conta = 0;
+            foreach (var item in filteredItems)
+            {
+                conta++;
+                Console.WriteLine($"\n{conta} - {item}");
+            }
+            Console.WriteLine($"\n\nTOT: {conta} {vehicleType}");
+            Console.ReadKey(true);
         }
 
         private static void CreaDatiDiProva()
