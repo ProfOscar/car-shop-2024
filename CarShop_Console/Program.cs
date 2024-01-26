@@ -44,6 +44,20 @@ namespace CarShop_Console
             }
         }
 
+        private static void CaricaDati()
+        {
+            try
+            {
+                ParcoMezzi = JsonTools.CaricaDati();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("\nEccezione in caricamento da file json: " + exc.Message);
+                Console.ReadKey(true);
+                Console.Clear();
+            }
+        }
+
         private static void SalvaDati()
         {
             if (JsonTools.SalvaDati(ParcoMezzi))
@@ -53,11 +67,6 @@ namespace CarShop_Console
             // Thread.Sleep(2000);
             Console.ReadKey(true);
             Console.Clear();
-        }
-
-        private static void CaricaDati()
-        {
-            throw new NotImplementedException();
         }
 
         private static char ScriviMenu()
@@ -94,19 +103,31 @@ namespace CarShop_Console
 
         private static void CreaDatiDiProva()
         {
-            Veicolo v = new Auto("BMW", "Serie 3", "FE518TW", new DateTime(2015, 10, 24), 19000, "",
-                TipoAlimentazione.Benzina, 5, true);
-            ParcoMezzi.Add(v);
-            v = new Auto("Mercedes", "CLA", "GA331LD", new DateTime(2022, 2, 15), 38000, "",
-                TipoAlimentazione.Diesel, 5, false);
-            ParcoMezzi.Add(v);
+            try
+            {
+                ParcoMezzi = JsonTools.CaricaDati();
+            }
+            catch (Exception exc)
+            {
+                Veicolo v = new Auto("BMW", "Serie 3", "FE518TW", new DateTime(2015, 10, 24), 19000, "",
+                    TipoAlimentazione.Benzina, 5, true);
+                ParcoMezzi.Add(v);
+                v = new Auto("Mercedes", "CLA", "GA331LD", new DateTime(2022, 2, 15), 38000, "",
+                    TipoAlimentazione.Diesel, 5, false);
+                ParcoMezzi.Add(v);
 
-            v = new Moto("Ducati", "Diavolo Rosso", "EH654TY", new DateTime(2022, 7, 10), 8500, "",
-                TipoMoto.Enduro, 4, false);
-            ParcoMezzi.Add(v);
+                v = new Moto("Ducati", "Diavolo Rosso", "EH654TY", new DateTime(2022, 7, 10), 8500, "",
+                    TipoMoto.Enduro, 4, false);
+                ParcoMezzi.Add(v);
 
-            v = new Furgone("FIAT", "Ducato", "E451UF", new DateTime(2007, 3, 11), 4200, "", 12000);
-            ParcoMezzi.Add(v);
+                v = new Furgone("FIAT", "Ducato", "E451UF", new DateTime(2007, 3, 11), 4200, "", 12000);
+                ParcoMezzi.Add(v);
+
+                Console.WriteLine("Eccezione in caricamento da file json: " + exc.Message);
+                Console.WriteLine("Dati di prova creati staticamente");
+                Console.ReadKey(true);
+                Console.Clear();
+            }
         }
     }
 }

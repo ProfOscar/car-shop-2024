@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CarShop_Library
 {
+
+    [JsonDerivedType(typeof(Veicolo), typeDiscriminator: "base")]
     public abstract class Veicolo
     {
+        public Veicolo() { }
+
         public Veicolo(string marca, string modello, string targa, DateTime dtImmatricolazione, int prezzo, string image)
         {
             Marca = marca;

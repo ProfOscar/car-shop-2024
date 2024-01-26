@@ -13,6 +13,18 @@ namespace CarShop_Library
         const string defaultFileName = "parco-auto.json";
 
         /// <summary>
+        /// Load a list of Veicolo from a JSON file
+        /// </summary>
+        /// <param name="fileName">The file path of the data (parco-auto.json as default)</param>
+        /// <returns>A List of Veicolo</returns>
+        /// <exception>Something goes wrong reading the data</exception>
+        public static List<Veicolo> CaricaDati(string fileName = defaultFileName)
+        {
+            string jsonString = File.ReadAllText(fileName);
+            return JsonSerializer.Deserialize<List<Veicolo>>(jsonString);
+        }
+
+        /// <summary>
         /// Save a list of Veicolo in a JSON file
         /// </summary>
         /// <param name="dati">The list of Veicolo to save</param>
@@ -22,7 +34,8 @@ namespace CarShop_Library
         {
             try
             {
-                string jsonString = JsonSerializer.Serialize<List<Veicolo>>(dati);
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                string jsonString = JsonSerializer.Serialize<List<Veicolo>>(dati, options);
                 File.WriteAllText(fileName, jsonString);
                 return true;
             }
