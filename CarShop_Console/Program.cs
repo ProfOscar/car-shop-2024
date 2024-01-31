@@ -49,13 +49,14 @@ namespace CarShop_Console
             try
             {
                 ParcoMezzi = JsonTools.CaricaDati();
+                Console.WriteLine("\n*** CARICAMENTO DATI OK ***");
             }
             catch (Exception exc)
             {
                 Console.WriteLine("\nEccezione in caricamento da file json: " + exc.Message);
-                Console.ReadKey(true);
-                Console.Clear();
             }
+            Console.ReadKey(true);
+            Console.Clear();
         }
 
         private static void SalvaDati()
@@ -106,6 +107,9 @@ namespace CarShop_Console
             try
             {
                 ParcoMezzi = JsonTools.CaricaDati();
+                Console.WriteLine("\n*** CARICAMENTO DATI OK ***");
+                Console.ReadKey(true);
+                Console.Clear();
             }
             catch (Exception exc)
             {

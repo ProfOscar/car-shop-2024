@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace CarShop_Library
 {
 
-    [JsonDerivedType(typeof(Veicolo), typeDiscriminator: "base")]
+    [JsonDerivedType(typeof(Auto), typeDiscriminator: "auto")]
+    [JsonDerivedType(typeof(Moto), typeDiscriminator: "moto")]
+    [JsonDerivedType(typeof(Furgone), typeDiscriminator: "furg")]
     public abstract class Veicolo
     {
         public Veicolo() { }
