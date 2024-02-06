@@ -61,7 +61,10 @@ namespace CarShop_Console
             // copiamo template html su index.html
             File.Copy("./html/template.html", $"./html/{v.Targa}.html", true);
             // innestiamo in {v.Targa}.html i dati del veicolo richiesto
+            string content = File.ReadAllText($"./html/{v.Targa}.html");
+            content = content.Replace("{{marca}}", v.Marca).Replace("{{modello}}", v.Modello);
             // salviamo e apriamo nel browser di default il file {v.Targa}.html
+            File.WriteAllText($"./html/{v.Targa}.html", content);
             string pgmDir = AppDomain.CurrentDomain.BaseDirectory;
             Process.Start($"{pgmDir}/html/{v.Targa}.html");
         }
