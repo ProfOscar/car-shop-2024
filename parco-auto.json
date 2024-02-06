@@ -1,0 +1,96 @@
+[
+  {
+    "$type": "auto",
+    "Alimentazione": 1,
+    "NumPorte": 5,
+    "IsTettoPanoramico": true,
+    "Marca": "BMW",
+    "Modello": "Serie 3",
+    "Targa": "FE518TW",
+    "DtImmatricolazione": "2015-10-24T00:00:00",
+    "Prezzo": 19000,
+    "Image": ""
+  },
+  {
+    "$type": "auto",
+    "Alimentazione": 2,
+    "NumPorte": 5,
+    "IsTettoPanoramico": false,
+    "Marca": "Mercedes",
+    "Modello": "CLA",
+    "Targa": "GA331LD",
+    "DtImmatricolazione": "2022-02-15T00:00:00",
+    "Prezzo": 38000,
+    "Image": ""
+  },
+  {
+    "$type": "auto",
+    "Alimentazione": 1,
+    "NumPorte": 5,
+    "IsTettoPanoramico": false,
+    "Marca": "Jeep",
+    "Modello": "Compass",
+    "Targa": "FR765KE",
+    "DtImmatricolazione": "2022-12-05T00:00:00",
+    "Prezzo": 30000,
+    "Image": ""
+  },
+  {
+    "$type": "auto",
+    "Alimentazione": 3,
+    "NumPorte": 4,
+    "IsTettoPanoramico": true,
+    "Marca": "Hyundai",
+    "Modello": "Kona",
+    "Targa": "GE444PO",
+    "DtImmatricolazione": "2023-04-10T00:00:00",
+    "Prezzo": 27500,
+    "Image": ""
+  },
+  {
+    "$type": "moto",
+    "Tipo": 2,
+    "NumTempi": 4,
+    "IsBauletto": false,
+    "Marca": "Ducati",
+    "Modello": "Diavolo Rosso",
+    "Targa": "EH654TY",
+    "DtImmatricolazione": "2022-07-10T00:00:00",
+    "Prezzo": 8500,
+    "Image": ""
+  },
+  {
+    "$type": "moto",
+    "Tipo": 4,
+    "NumTempi": 2,
+    "IsBauletto": true,
+    "Marca": "Yamaha",
+    "Modello": "ET75",
+    "Targa": "GA184YT",
+    "DtImmatricolazione": "2023-09-13T00:00:00",
+    "Prezzo": 12500,
+    "Image": ""
+  },
+  {
+    "$type": "moto",
+    "Tipo": 3,
+    "NumTempi": 2,
+    "IsBauletto": false,
+    "Marca": "Honda",
+    "Modello": "ExtraSpeed",
+    "Targa": "FR392TS",
+    "DtImmatricolazione": "2022-10-12T00:00:00",
+    "Prezzo": 5500,
+    "Image": ""
+  },
+  {
+    "$type": "furg",
+    "Portata": 12000,
+    "Marca": "FIAT",
+    "Modello": "Ducato",
+    "Targa": "E451UF",
+    "DtImmatricolazione": "2007-03-11T00:00:00",
+    "Prezzo": 4200,
+    "Image": ""
+  }
+]

@@ -1,6 +1,8 @@
 ﻿using CarShop_Library;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -38,10 +40,30 @@ namespace CarShop_Console
                     case '3':
                         Elenco<Moto>();
                         break;
+                    case 'h':
+                    case 'H':
+                        EsportaHtml();
+                        break;
                     default:
                         break;
                 }
             }
+        }
+
+        private static void EsportaHtml()
+        {
+            int num;
+            do
+            {
+                Console.Write("\nInserisci il numero del veicolo: ");
+            } while (!int.TryParse(Console.ReadLine(), out num) || num <= 0 || num >= ParcoMezzi.Count);
+            Veicolo v = ParcoMezzi[num];
+            // copiamo template html su index.html
+            File.Copy("./html/template.html", $"./html/{v.Targa}.html", true);
+            // innestiamo in {v.Targa}.html i dati del veicolo richiesto
+            // salviamo e apriamo nel browser di default il file {v.Targa}.html
+            string pgmDir = AppDomain.CurrentDomain.BaseDirectory;
+            Process.Start($"{pgmDir}/html/{v.Targa}.html");
         }
 
         private static void CaricaDati()
@@ -81,6 +103,8 @@ namespace CarShop_Console
             Console.WriteLine("1 - Visualizza TUTTI");
             Console.WriteLine("2 - Visualizza AUTO");
             Console.WriteLine("3 - Visualizza MOTO");
+            Console.WriteLine("".PadLeft(34, '-'));
+            Console.WriteLine("H - Crea Volantino HTML");
             Console.WriteLine("".PadLeft(34, '-'));
             Console.WriteLine("Q - ESCI");
             return Console.ReadKey(true).KeyChar;
