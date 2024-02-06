@@ -56,8 +56,8 @@ namespace CarShop_Console
             do
             {
                 Console.Write("\nInserisci il numero del veicolo: ");
-            } while (!int.TryParse(Console.ReadLine(), out num) || num <= 0 || num >= ParcoMezzi.Count);
-            Veicolo v = ParcoMezzi[num];
+            } while (!int.TryParse(Console.ReadLine(), out num) || num <= 0 || num > ParcoMezzi.Count);
+            Veicolo v = ParcoMezzi[num - 1];
             // copiamo template html su index.html
             File.Copy("./html/template.html", $"./html/{v.Targa}.html", true);
             // innestiamo in {v.Targa}.html i dati del veicolo richiesto
