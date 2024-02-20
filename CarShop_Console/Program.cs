@@ -44,6 +44,10 @@ namespace CarShop_Console
                     case 'H':
                         EsportaHtml();
                         break;
+                    case 'w':
+                    case 'W':
+                        EsportaDocx();
+                        break;
                     default:
                         break;
                 }
@@ -67,6 +71,21 @@ namespace CarShop_Console
             File.WriteAllText($"./html/{v.Targa}.html", content);
             string pgmDir = AppDomain.CurrentDomain.BaseDirectory;
             Process.Start($"{pgmDir}/html/{v.Targa}.html");
+        }
+
+        private static void EsportaDocx()
+        {
+            int num;
+            do
+            {
+                Console.Write("\nInserisci il numero del veicolo: ");
+            } while (!int.TryParse(Console.ReadLine(), out num) || num <= 0 || num > ParcoMezzi.Count);
+            Veicolo v = ParcoMezzi[num - 1];
+            // creiamo il volantino docx tramite OpenXML
+            string pgmDir = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = $"{pgmDir}/{v.Targa}.docx";
+            OpenXmlTools.GeneraVolantinoDocx(filePath);
+            Process.Start(filePath);
         }
 
         private static void CaricaDati()
@@ -108,6 +127,7 @@ namespace CarShop_Console
             Console.WriteLine("3 - Visualizza MOTO");
             Console.WriteLine("".PadLeft(34, '-'));
             Console.WriteLine("H - Crea Volantino HTML");
+            Console.WriteLine("W - Crea Volantino DOCX");
             Console.WriteLine("".PadLeft(34, '-'));
             Console.WriteLine("Q - ESCI");
             return Console.ReadKey(true).KeyChar;
