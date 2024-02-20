@@ -34,22 +34,41 @@ namespace CarShop_Library
                     Vivamus porttitor, nibh in maximus gravida, enim arcu porta leo, ac porttitor 
                     enim elit vel sapien.";
 
-                docBody.Append(CreaParagrafo(lorem));
-                docBody.Append(CreaParagrafo(lorem));
-                docBody.Append(CreaParagrafo(lorem));
-                docBody.Append(CreaParagrafo(lorem));
-                docBody.Append(CreaParagrafo(lorem));
+                docBody.Append(CreaParagrafo(lorem, JustificationValues.Left));
+                docBody.Append(CreaParagrafo(lorem, JustificationValues.Center));
+                docBody.Append(CreaParagrafo(lorem, JustificationValues.Right));
             }
         }
 
-        public static Paragraph CreaParagrafo(string contenuto)
+        public static Paragraph CreaParagrafo(string contenuto,
+            JustificationValues giustificazione)
         {
             Paragraph paragraph = new Paragraph();
+            ParagraphProperties paragraphProperties = new ParagraphProperties();
+            paragraphProperties.Justification = new Justification() { Val = giustificazione };
+            paragraph.Append(paragraphProperties);
+
+            paragraph.Append(CreaRun(contenuto));
+            return paragraph;
+        }
+
+        public static Run CreaRun(string contenuto,
+            bool isGrassetto = false, bool isCorsivo = false, bool isSottolineato = false,
+            string colore = "000000")
+        {
             Run run = new Run();
+            RunProperties runProperties = new RunProperties();
+
+            if (isGrassetto) runProperties.Bold = new Bold();
+            if (isCorsivo) runProperties.Italic = new Italic();
+            if (isSottolineato) runProperties.Underline = new Underline();
+            runProperties.Color = new Color() { Val = colore };
+            run.Append(runProperties);
+
             Text text = new Text(contenuto);
             run.Append(text);
-            paragraph.Append(run);
-            return paragraph;
+
+            return run;
         }
     }
 }
