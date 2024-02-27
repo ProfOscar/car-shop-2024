@@ -19,20 +19,36 @@ namespace CarShop_Library
                 // Creo il MainDocumentPart che è indispensabile
                 MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
 
+                // Creo lo StyleDefinitionPart per supportare la creazione di stili personalizzati
+                StyleDefinitionsPart styleDefinitionsPart = mainPart.AddNewPart<StyleDefinitionsPart>();
+                styleDefinitionsPart.Styles = new Styles();
+                styleDefinitionsPart.Styles.Save();
+
                 // Creo il documento vero e proprio
                 mainPart.Document = new Document();
                 Body docBody = new Body();
                 mainPart.Document.Append(docBody);
 
-                // Aggiungo un paragrafo di test
-                string lorem = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Sed aliquet mauris in magna finibus, ut porttitor felis condimentum. 
-                    Cras sed hendrerit ex. Sed porta dictum purus eu dictum. 
-                    Donec hendrerit aliquet mollis. Maecenas volutpat lacus eu lorem porta, 
-                    quis imperdiet nibh pharetra. Sed ac eros diam. Sed ex libero, commodo in 
-                    iaculis nec, scelerisque in erat. Proin ultricies hendrerit volutpat. 
-                    Vivamus porttitor, nibh in maximus gravida, enim arcu porta leo, ac porttitor 
-                    enim elit vel sapien.";
+                // Aggiungo la stringa per i paragrafi di test
+                string lorem = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet mauris in magna finibus, ut porttitor felis condimentum. Cras sed hendrerit ex. Sed porta dictum purus eu dictum. Donec hendrerit aliquet mollis. Maecenas volutpat lacus eu lorem porta, quis imperdiet nibh pharetra. Sed ac eros diam. Sed ex libero, commodo in iaculis nec, scelerisque in erat. Proin ultricies hendrerit volutpat. Vivamus porttitor, nibh in maximus gravida, enim arcu porta leo, ac porttitor enim elit vel sapien.";
+
+                // paragrafi con style
+                Style style1 = CreaStile("Codice", "left", "CCCCCC", "Courier New", 10);
+                mainPart.StyleDefinitionsPart.Styles.Append(style1);
+                mainPart.StyleDefinitionsPart.Styles.Save();
+                // occorrerà creare un metodo CreaParagrafoConStile(...)
+                Paragraph p1 = new Paragraph();
+                ParagraphProperties pp1 = new ParagraphProperties();
+                pp1.ParagraphStyleId = new ParagraphStyleId() { Val = "Codice" };
+                p1.Append(pp1);
+                // Run Heading1
+                Run rH1 = new Run();
+                Text tH1 = new Text(lorem);
+                rH1.Append(tH1);
+                p1.Append(rH1);
+                // Add your heading to docx body
+                docBody.Append(p1);
+
 
                 // 3 paragrafi semplici con diversa giustificazione
                 docBody.Append(CreaParagrafo(lorem));
@@ -82,7 +98,8 @@ namespace CarShop_Library
             paragraphProperties.Justification = new Justification() { Val = justificationValues };
             paragraph.Append(paragraphProperties);
 
-            if (contenuto != "") paragraph.Append(CreaRun(contenuto, isGrassetto, isCorsivo, isSottolineato,
+            if (contenuto != "") paragraph.Append(CreaRun(contenuto, 
+                isGrassetto, isCorsivo, isSottolineato,
                 colore, fontFace, fontSize));
             return paragraph;
         }
@@ -106,6 +123,48 @@ namespace CarShop_Library
             run.Append(text);
 
             return run;
+        }
+
+        public static Style CreaStile(string styleName, string giustificazione = "left",
+            string colore = "000000", string fontFace = "Calibri", double fontSize = 11)
+        {
+            Style style = new Style()
+            {
+                Type = StyleValues.Paragraph,
+                StyleId = styleName,
+                CustomStyle = true,
+                StyleName = new StyleName() { Val = styleName },
+                BasedOn = new BasedOn() { Val = "Normal" },
+                NextParagraphStyle = new NextParagraphStyle() { Val = "Normal" },
+                UIPriority = new UIPriority() { Val = 900 },
+                Default = false
+            };
+
+            StyleParagraphProperties paragraphProperties = new StyleParagraphProperties();
+            JustificationValues justificationValues;
+            switch (giustificazione)
+            {
+                case "left":
+                    justificationValues = JustificationValues.Left; break;
+                case "center":
+                    justificationValues = JustificationValues.Center; break;
+                case "right":
+                    justificationValues = JustificationValues.Right; break;
+                case "distribute":
+                    justificationValues = JustificationValues.Distribute; break;
+                default:
+                    break;
+            }
+            paragraphProperties.Justification = new Justification() { Val = justificationValues };
+            style.Append(paragraphProperties);
+
+            StyleRunProperties runProperties = new StyleRunProperties();
+            runProperties.Color = new Color() { Val = colore };
+            runProperties.RunFonts = new RunFonts() { Ascii = fontFace };
+            runProperties.FontSize = new FontSize() { Val = (fontSize * 2).ToString() };
+            style.Append(runProperties);
+
+            return style;
         }
     }
 }
