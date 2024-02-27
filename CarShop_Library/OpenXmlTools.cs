@@ -35,12 +35,16 @@ namespace CarShop_Library
                     enim elit vel sapien.";
 
                 // 3 paragrafi semplici con diversa giustificazione
-                docBody.Append(CreaParagrafo(JustificationValues.Left, lorem));
-                docBody.Append(CreaParagrafo(JustificationValues.Center, lorem));
-                docBody.Append(CreaParagrafo(JustificationValues.Right, lorem));
+                docBody.Append(CreaParagrafo(lorem));
+                docBody.Append(CreaParagrafo(lorem, "center"));
+                docBody.Append(CreaParagrafo(lorem, "right"));
+                docBody.Append(CreaParagrafo(lorem, "distribute"));
+
+                // 1 paragrafo formattato in modo omogeneo
+                docBody.Append(CreaParagrafo(lorem, "left", false, true, false, "77FF33", "Tahoma", 15));
 
                 // un paragrafo con il contenuto formattato nei diversi run
-                Paragraph p = CreaParagrafo(JustificationValues.Center);
+                Paragraph p = CreaParagrafo("", "center");
                 Run r = CreaRun("Testo normale"); p.Append(r);
                 r = CreaRun("Testo grassetto", true); p.Append(r);
                 r = CreaRun("Testo corsivo", false, true); p.Append(r);
@@ -48,22 +52,38 @@ namespace CarShop_Library
                 r = CreaRun("Testo grassetto, corsivo, sottolineato, colorato", true, true, true, "993300"); p.Append(r);
                 docBody.Append(p);
 
-                p = CreaParagrafo(JustificationValues.Left);
+                p = CreaParagrafo();
                 r = CreaRun("Testo con font arial 34", false, false, false, "000000", "Arial", 34);
                 p.Append(r);
                 docBody.Append(p);
             }
         }
 
-        public static Paragraph CreaParagrafo(JustificationValues giustificazione,
-            string contenuto = "")
+        public static Paragraph CreaParagrafo(string contenuto = "", string giustificazione = "left",
+            bool isGrassetto = false, bool isCorsivo = false, bool isSottolineato = false,
+            string colore = "000000", string fontFace = "Calibri", double fontSize = 11)
         {
             Paragraph paragraph = new Paragraph();
             ParagraphProperties paragraphProperties = new ParagraphProperties();
-            paragraphProperties.Justification = new Justification() { Val = giustificazione };
+            JustificationValues justificationValues;
+            switch (giustificazione)
+            {
+                case "left":
+                    justificationValues = JustificationValues.Left; break;
+                case "center":
+                    justificationValues = JustificationValues.Center; break;
+                case "right":
+                    justificationValues = JustificationValues.Right; break;
+                case "distribute":
+                    justificationValues = JustificationValues.Distribute; break;
+                default:
+                    break;
+            }
+            paragraphProperties.Justification = new Justification() { Val = justificationValues };
             paragraph.Append(paragraphProperties);
 
-            if (contenuto != "") paragraph.Append(CreaRun(contenuto));
+            if (contenuto != "") paragraph.Append(CreaRun(contenuto, isGrassetto, isCorsivo, isSottolineato,
+                colore, fontFace, fontSize));
             return paragraph;
         }
 
@@ -79,7 +99,7 @@ namespace CarShop_Library
             if (isSottolineato) runProperties.Underline = new Underline() { Val = UnderlineValues.Single };
             runProperties.Color = new Color() { Val = colore };
             runProperties.RunFonts = new RunFonts() { Ascii = fontFace };
-            runProperties.FontSize = new FontSize() { Val=(fontSize*2).ToString() };
+            runProperties.FontSize = new FontSize() { Val = (fontSize * 2).ToString() };
             run.Append(runProperties);
 
             Text text = new Text(contenuto);
