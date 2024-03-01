@@ -1,4 +1,7 @@
 ﻿using CarShop_Library;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -84,7 +87,7 @@ namespace CarShop_Console
             // creiamo il volantino docx tramite OpenXML
             string pgmDir = AppDomain.CurrentDomain.BaseDirectory;
             string filePath = $"{pgmDir}/{v.Targa}.docx";
-            OpenXmlTools.GeneraVolantinoDocx(filePath);
+            GeneraVolantinoDocx(filePath);
             Process.Start(filePath);
         }
 
@@ -180,5 +183,47 @@ namespace CarShop_Console
                 Console.Clear();
             }
         }
+
+        public static void GeneraVolantinoDocx(string filePath)
+        {
+            using (WordprocessingDocument wordDocument = OpenXmlTools.CreaDocumento(filePath))
+            {
+                // prendo un riferimento al body del documento
+                Body docBody = wordDocument.MainDocumentPart.Document.Body;
+
+                // Aggiungo la stringa per i paragrafi di test
+                string lorem = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet mauris in magna finibus, ut porttitor felis condimentum. Cras sed hendrerit ex. Sed porta dictum purus eu dictum. Donec hendrerit aliquet mollis. Maecenas volutpat lacus eu lorem porta, quis imperdiet nibh pharetra. Sed ac eros diam. Sed ex libero, commodo in iaculis nec, scelerisque in erat. Proin ultricies hendrerit volutpat. Vivamus porttitor, nibh in maximus gravida, enim arcu porta leo, ac porttitor enim elit vel sapien.";
+
+                // definisco stile
+                Style myStyle = OpenXmlTools.CreaStile(wordDocument, "Codice 1", "left", "CCCCCC", "Courier New", 10, 50, 100);
+
+                // utilizzo stile su paragrafo
+                docBody.Append(OpenXmlTools.CreaParagrafoConStile(lorem, myStyle.StyleId));
+
+                // 3 paragrafi semplici con diversa giustificazione
+                docBody.Append(OpenXmlTools.CreaParagrafo(lorem));
+                docBody.Append(OpenXmlTools.CreaParagrafo(lorem, "center"));
+                docBody.Append(OpenXmlTools.CreaParagrafo(lorem, "right"));
+                docBody.Append(OpenXmlTools.CreaParagrafo(lorem, "distribute"));
+
+                // 1 paragrafo formattato in modo omogeneo
+                docBody.Append(OpenXmlTools.CreaParagrafo(lorem, "left", false, true, false, "77FF33", "Tahoma", 15));
+
+                // un paragrafo con il contenuto formattato nei diversi run
+                Paragraph p = OpenXmlTools.CreaParagrafo("", "center");
+                Run r = OpenXmlTools.CreaRun("Testo normale"); p.Append(r);
+                r = OpenXmlTools.CreaRun("Testo grassetto", true); p.Append(r);
+                r = OpenXmlTools.CreaRun("Testo corsivo", false, true); p.Append(r);
+                r = OpenXmlTools.CreaRun("Testo sottolineato", false, false, true); p.Append(r);
+                r = OpenXmlTools.CreaRun("Testo grassetto, corsivo, sottolineato, colorato", true, true, true, "993300"); p.Append(r);
+                docBody.Append(p);
+
+                p = OpenXmlTools.CreaParagrafo();
+                r = OpenXmlTools.CreaRun("Testo con font arial 34", false, false, false, "000000", "Arial", 34);
+                p.Append(r);
+                docBody.Append(p);
+            }
+        }
+
     }
 }
