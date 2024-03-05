@@ -87,7 +87,7 @@ namespace CarShop_Console
             // creiamo il volantino docx tramite OpenXML
             string pgmDir = AppDomain.CurrentDomain.BaseDirectory;
             string filePath = $"{pgmDir}/{v.Targa}.docx";
-            GeneraVolantinoDocx(filePath);
+            TestVolantinoDocx(filePath);
             Process.Start(filePath);
         }
 
@@ -184,7 +184,7 @@ namespace CarShop_Console
             }
         }
 
-        public static void GeneraVolantinoDocx(string filePath)
+        public static void TestVolantinoDocx(string filePath)
         {
             using (WordprocessingDocument wordDocument = OpenXmlTools.CreaDocumento(filePath))
             {
@@ -222,6 +222,16 @@ namespace CarShop_Console
                 r = OpenXmlTools.CreaRun("Testo con font arial 34", false, false, false, "000000", "Arial", 34);
                 p.Append(r);
                 docBody.Append(p);
+
+                string[,] contenutoTabella = {
+                    { "MARCA", "MODELLO", "TARGA", "PREZZO" },
+                    { "BMW", "iX2", "GG528YT", "€ 57.800" },
+                    { "Jeep", "Compass", "FR508HD", "€ 35750" }
+                };
+                Table table = OpenXmlTools.CreaTabella(contenutoTabella, "center", "right", 
+                    "red", "green", 
+                    380);
+                docBody.Append(table);
             }
         }
 

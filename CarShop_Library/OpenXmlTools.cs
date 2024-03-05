@@ -123,7 +123,65 @@ namespace CarShop_Library
             return run;
         }
 
+        public static Table CreaTabella(string[,] contenuto,
+            string giustificazioneTabella = "left", string giustificazioneCelle = "left",
+            string coloreBordi = "333333", string coloreTesto = "333333",
+            int margine = 80)
+        {
+            Table table = new Table();
+            ModificaProprietaTabella(table, giustificazioneTabella, coloreBordi, margine);
+            for (int i = 0; i < contenuto.GetLength(0); i++)
+            {
+                TableRow tableRow = new TableRow();
+                for (int j = 0; j < contenuto.GetLength(1); j++)
+                {
+                    TableCell tableCell = new TableCell();
+                    Paragraph paragraph = CreaParagrafo(contenuto[i, j], giustificazioneCelle, false, false, false, coloreTesto);
+                    tableCell.Append(paragraph);
+                    tableRow.Append(tableCell);
+                }
+                table.Append(tableRow);
+            }
+            return table;
+        }
+
         #region Metodi privati
+
+        private static void ModificaProprietaTabella(Table table, string giustificazione, string coloreBordi, int margine)
+        {
+            // table justification 
+            TableProperties tableProperties = new TableProperties();
+            TableJustification tableJustification = getTableJustification(giustificazione);
+            tableProperties.Append(tableJustification);
+
+            // table borders
+            TableBorders tableBorders = new TableBorders();
+            TopBorder topBorder = new TopBorder() { Val = BorderValues.Thick, Color = coloreBordi };
+            tableBorders.Append(topBorder);
+            BottomBorder bottomBorder = new BottomBorder() { Val = BorderValues.Thick, Color = coloreBordi };
+            tableBorders.Append(bottomBorder);
+            RightBorder rightBorder = new RightBorder() { Val = BorderValues.Thick, Color = coloreBordi };
+            tableBorders.Append(rightBorder);
+            LeftBorder leftBorder = new LeftBorder() { Val = BorderValues.Thick, Color = coloreBordi };
+            tableBorders.Append(leftBorder);
+            InsideHorizontalBorder insideHorizontalBorder = new InsideHorizontalBorder() { Val = BorderValues.Thick, Color = coloreBordi };
+            tableBorders.Append(insideHorizontalBorder);
+            InsideVerticalBorder insideVerticalBorder = new InsideVerticalBorder() { Val = BorderValues.Thick, Color = coloreBordi };
+            tableBorders.Append(insideVerticalBorder);
+            tableProperties.Append(tableBorders);
+
+            // table margins
+            TableCellMarginDefault tableCellMarginDefault = new TableCellMarginDefault(
+                    new TopMargin() { Width = margine.ToString(), Type = TableWidthUnitValues.Dxa },
+                    new StartMargin() { Width = margine.ToString(), Type = TableWidthUnitValues.Dxa },
+                    new BottomMargin() { Width = margine.ToString(), Type = TableWidthUnitValues.Dxa },
+                    new EndMargin() { Width = margine.ToString(), Type = TableWidthUnitValues.Dxa }
+                );
+            tableProperties.Append(tableCellMarginDefault);
+
+            table.Append(tableProperties);
+        }
+
         private static JustificationValues getJustificationValues(string giustificazione)
         {
             JustificationValues justificationValues;
@@ -138,6 +196,27 @@ namespace CarShop_Library
                 case "distribute":
                     justificationValues = JustificationValues.Distribute; break;
                 default:
+                    break;
+            }
+            return justificationValues;
+        }
+
+        private static TableJustification getTableJustification(string giustificazione)
+        {
+            TableJustification justificationValues;
+            switch (giustificazione)
+            {
+                case "left":
+                    justificationValues = new TableJustification() { Val = TableRowAlignmentValues.Left};
+                    break;
+                case "center":
+                    justificationValues = new TableJustification() { Val = TableRowAlignmentValues.Center };
+                    break;
+                case "right":
+                    justificationValues = new TableJustification() { Val = TableRowAlignmentValues.Right };
+                    break;
+                default:
+                    justificationValues = new TableJustification();
                     break;
             }
             return justificationValues;
