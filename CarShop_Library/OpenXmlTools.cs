@@ -145,6 +145,32 @@ namespace CarShop_Library
             return table;
         }
 
+        public static List<Paragraph> CreaElenco(string[] contenuto, bool isOrdered = false,
+            string colore = "000000", string fontFace = "Calibri", double fontSize = 11)
+        {
+            List<Paragraph> list = new List<Paragraph>();
+
+            // list properties
+            SpacingBetweenLines spacingBetweenLines = new SpacingBetweenLines() { After = "0" };
+            Indentation indentation = new Indentation() { Left = "260", Hanging = "240" };
+            NumberingProperties numberingProperties = new NumberingProperties(
+                    new NumberingLevelReference() { Val = 0 },
+                    new NumberingId() { Val = isOrdered ? 2 : 1 }
+                );
+            ParagraphProperties paragraphProperties = new ParagraphProperties(
+                spacingBetweenLines, indentation, numberingProperties);
+
+            // content
+            for (int i = 0; i < contenuto.Length; i++)
+            {
+                Paragraph paragraph = CreaParagrafo(contenuto[i], 
+                    default, default, default, default, 
+                    colore, fontFace, fontSize);
+                list.Add(paragraph);
+            }
+
+            return list;
+        }
         #region Metodi privati
 
         private static void ModificaProprietaTabella(Table table, string giustificazione, string coloreBordi, int margine)

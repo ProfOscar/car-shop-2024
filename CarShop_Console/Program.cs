@@ -200,6 +200,22 @@ namespace CarShop_Console
                 // utilizzo stile su paragrafo
                 docBody.Append(OpenXmlTools.CreaParagrafoConStile(lorem, myStyle.StyleId));
 
+                // test elenchi
+                string[] contenutoElenchi = { "BMW Serie 3", "Jeep Compass", "Mercedes CLA", "Fiat Panda" };
+                List<Paragraph> elenco = OpenXmlTools.CreaElenco(contenutoElenchi);
+                foreach (var item in elenco) docBody.Append(item);
+
+                // test tabella
+                string[,] contenutoTabella = {
+                    { "MARCA", "MODELLO", "TARGA", "PREZZO" },
+                    { "BMW", "iX2", "GG528YT", "€ 57.800" },
+                    { "Jeep", "Compass", "FR508HD", "€ 35750" }
+                };
+                Table table = OpenXmlTools.CreaTabella(contenutoTabella, "center", "right",
+                    "red", "green",
+                    380);
+                docBody.Append(table);
+
                 // 3 paragrafi semplici con diversa giustificazione
                 docBody.Append(OpenXmlTools.CreaParagrafo(lorem));
                 docBody.Append(OpenXmlTools.CreaParagrafo(lorem, "center"));
@@ -222,16 +238,6 @@ namespace CarShop_Console
                 r = OpenXmlTools.CreaRun("Testo con font arial 34", false, false, false, "000000", "Arial", 34);
                 p.Append(r);
                 docBody.Append(p);
-
-                string[,] contenutoTabella = {
-                    { "MARCA", "MODELLO", "TARGA", "PREZZO" },
-                    { "BMW", "iX2", "GG528YT", "€ 57.800" },
-                    { "Jeep", "Compass", "FR508HD", "€ 35750" }
-                };
-                Table table = OpenXmlTools.CreaTabella(contenutoTabella, "center", "right", 
-                    "red", "green", 
-                    380);
-                docBody.Append(table);
             }
         }
 
