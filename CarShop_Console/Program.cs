@@ -202,7 +202,11 @@ namespace CarShop_Console
 
                 // test elenchi
                 string[] contenutoElenchi = { "BMW Serie 3", "Jeep Compass", "Mercedes CLA", "Fiat Panda" };
-                List<Paragraph> elenco = OpenXmlTools.CreaElenco(contenutoElenchi);
+                // elenco numerato
+                List<Paragraph> elenco = OpenXmlTools.CreaElenco(contenutoElenchi, true);
+                foreach (var item in elenco) docBody.Append(item);
+                // elenco puntato
+                elenco = OpenXmlTools.CreaElenco(contenutoElenchi, false);
                 foreach (var item in elenco) docBody.Append(item);
 
                 // test tabella

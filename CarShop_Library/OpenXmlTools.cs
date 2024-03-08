@@ -25,6 +25,19 @@ namespace CarShop_Library
             styleDefinitionsPart.Styles = new Styles();
             styleDefinitionsPart.Styles.Save();
 
+            // Creo il NumberingDefinitionsPart per supportare la gestione degli elenchi puntati
+            NumberingDefinitionsPart numberingDefinitionsPart = mainPart.AddNewPart<NumberingDefinitionsPart>("UnorderedList");
+            Numbering numbering = new Numbering(
+                new AbstractNum(
+                    new Level(
+                        new NumberingFormat() { Val = NumberFormatValues.Bullet },
+                        new LevelText() { Val = "\u2022" } // 2022 è il codice unicode del punto elenco di word
+                    ) { LevelIndex = 0 }
+                ) { AbstractNumberId = 1 },
+                new NumberingInstance(new AbstractNumId() { Val = 1 }) { NumberID = 1 }
+            );
+            numbering.Save(numberingDefinitionsPart);
+
             // Creo il documento vero e proprio
             mainPart.Document = new Document();
             Body docBody = new Body();
@@ -159,6 +172,7 @@ namespace CarShop_Library
                 );
             ParagraphProperties paragraphProperties = new ParagraphProperties(
                 spacingBetweenLines, indentation, numberingProperties);
+            paragraphProperties.ParagraphStyleId = new ParagraphStyleId() { Val = "ListParagraph" };
 
             // content
             for (int i = 0; i < contenuto.Length; i++)
@@ -166,6 +180,7 @@ namespace CarShop_Library
                 Paragraph paragraph = CreaParagrafo(contenuto[i], 
                     default, default, default, default, 
                     colore, fontFace, fontSize);
+                paragraph.ParagraphProperties = new ParagraphProperties(paragraphProperties.OuterXml);
                 list.Add(paragraph);
             }
 
