@@ -194,55 +194,15 @@ namespace CarShop_Console
                 // Aggiungo la stringa per i paragrafi di test
                 string lorem = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet mauris in magna finibus, ut porttitor felis condimentum. Cras sed hendrerit ex. Sed porta dictum purus eu dictum. Donec hendrerit aliquet mollis. Maecenas volutpat lacus eu lorem porta, quis imperdiet nibh pharetra. Sed ac eros diam. Sed ex libero, commodo in iaculis nec, scelerisque in erat. Proin ultricies hendrerit volutpat. Vivamus porttitor, nibh in maximus gravida, enim arcu porta leo, ac porttitor enim elit vel sapien.";
 
-                // definisco stile
-                Style myStyle = OpenXmlWorldTools.CreaStile(wordDocument, "Codice 1", "left", "CCCCCC", "Courier New", 10, 50, 100);
+                // definisco stili
+                Style titolo1Style = OpenXmlWorldTools.CreaStile(wordDocument, "Mio Titolo 1", "center", "1100CC", "Comics Sans", 24, 80, 120);
+                Style titolo2Style = OpenXmlWorldTools.CreaStile(wordDocument, "Mio Titolo 2", "center", "AA5522", "Tahoma", 18, 60, 40);
+                Style codiceStyle = OpenXmlWorldTools.CreaStile(wordDocument, "Codice", "left", "CCCCCC", "Courier New", 10, 50, 100);
 
-                // utilizzo stile su paragrafo
-                docBody.Append(OpenXmlWorldTools.CreaParagrafoConStile(lorem, myStyle.StyleId));
-
-                // test hyperlink
-                Paragraph pHyperlink = OpenXmlWorldTools.CreaParagrafo();
-                // Hyperlink hyperlink = OpenXmlTools.CreaHyperlink(wordDocument, "http://www.vallauri.edu", "Vai al sito del Vallauri");
-                Hyperlink hyperlink = OpenXmlWorldTools.CreaHyperlink(wordDocument, 
-                    "http://www.vallauri.edu", "Vai al sito del Vallauri",
-                    false, false, true, "0000FF", "Tahoma", 32.5);
-                pHyperlink.Append(hyperlink);
-                docBody.Append(pHyperlink);
-
-                // test hyperlink in paragrafo allineato a destra
-                pHyperlink = OpenXmlWorldTools.CreaParagrafo("", "right");
-                hyperlink = OpenXmlWorldTools.CreaHyperlink(wordDocument,
-                    "http://www.vallauri.edu", "Vai al sito del Vallauri (allineato a destra)");
-                pHyperlink.Append(hyperlink);
-                docBody.Append(pHyperlink);
-
-                // test immagine
-                string imageUrl = "https://www.robinsonpetshop.it/news/cms2017/wp-content/uploads/2022/07/GattinoPrimiMesi.jpg";
-                Paragraph pImage = OpenXmlWorldTools.AggiungiImmagine(wordDocument, imageUrl, "center", 100, 100);
-                docBody.Append(pImage);
-                imageUrl = "https://png.pngtree.com/png-clipart/20230507/ourmid/pngtree-tiger-walking-wildlife-scene-transparent-background-png-image_7088126.png";
-                pImage = OpenXmlWorldTools.AggiungiImmagine(wordDocument, imageUrl, "right");
-                docBody.Append(pImage);
-
-                // test elenchi
-                string[] contenutoElenchi = { "BMW Serie 3", "Jeep Compass", "Mercedes CLA", "Fiat Panda" };
-                // elenco numerato
-                List<Paragraph> elenco = OpenXmlWorldTools.CreaElenco(contenutoElenchi, true);
-                foreach (var item in elenco) docBody.Append(item);
-                // elenco puntato
-                elenco = OpenXmlWorldTools.CreaElenco(contenutoElenchi, false);
-                foreach (var item in elenco) docBody.Append(item);
-
-                // test tabella
-                string[,] contenutoTabella = {
-                    { "MARCA", "MODELLO", "TARGA", "PREZZO" },
-                    { "BMW", "iX2", "GG528YT", "€ 57.800" },
-                    { "Jeep", "Compass", "FR508HD", "€ 35750" }
-                };
-                Table table = OpenXmlWorldTools.CreaTabella(contenutoTabella, "center", "right",
-                    "red", "green",
-                    380);
-                docBody.Append(table);
+                // utilizzo stili
+                docBody.Append(OpenXmlWorldTools.CreaParagrafoConStile("Prova Mio Titolo 1", titolo1Style.StyleId));
+                docBody.Append(OpenXmlWorldTools.CreaParagrafoConStile("Prova Mio Titolo 2", titolo2Style.StyleId));
+                docBody.Append(OpenXmlWorldTools.CreaParagrafoConStile(lorem, codiceStyle.StyleId));
 
                 // 3 paragrafi semplici con diversa giustificazione
                 docBody.Append(OpenXmlWorldTools.CreaParagrafo(lorem));
@@ -262,10 +222,52 @@ namespace CarShop_Console
                 r = OpenXmlWorldTools.CreaRun("Testo grassetto, corsivo, sottolineato, colorato", true, true, true, "993300"); p.Append(r);
                 docBody.Append(p);
 
+                // paragrafo con font impostato nel run
                 p = OpenXmlWorldTools.CreaParagrafo();
                 r = OpenXmlWorldTools.CreaRun("Testo con font arial 34", false, false, false, "000000", "Arial", 34);
                 p.Append(r);
                 docBody.Append(p);
+
+                // test hyperlink
+                Paragraph pHyperlink = OpenXmlWorldTools.CreaParagrafo();
+                // Hyperlink hyperlink = OpenXmlTools.CreaHyperlink(wordDocument, "http://www.vallauri.edu", "Vai al sito del Vallauri");
+                Hyperlink hyperlink = OpenXmlWorldTools.CreaHyperlink(wordDocument, 
+                    "http://www.vallauri.edu", "Vai al sito del Vallauri",
+                    false, false, true, "0000FF", "Tahoma", 32.5);
+                pHyperlink.Append(hyperlink);
+                docBody.Append(pHyperlink);
+
+                // test hyperlink in paragrafo allineato a destra
+                pHyperlink = OpenXmlWorldTools.CreaParagrafo("", "right");
+                hyperlink = OpenXmlWorldTools.CreaHyperlink(wordDocument, "http://www.vallauri.edu", "Vai al sito del Vallauri (allineato a destra)");
+                pHyperlink.Append(hyperlink);
+                docBody.Append(pHyperlink);
+
+                // test elenchi
+                string[] contenutoElenchi = { "BMW Serie 3", "Jeep Compass", "Mercedes CLA", "Fiat Panda" };
+                // elenco numerato
+                List<Paragraph> elenco = OpenXmlWorldTools.CreaElenco(contenutoElenchi, true);
+                foreach (var item in elenco) docBody.Append(item);
+                // elenco puntato
+                elenco = OpenXmlWorldTools.CreaElenco(contenutoElenchi, false);
+                foreach (var item in elenco) docBody.Append(item);
+
+                // test tabella
+                string[,] contenutoTabella = {
+                    { "MARCA", "MODELLO", "TARGA", "PREZZO" },
+                    { "BMW", "iX2", "GG528YT", "€ 57.800" },
+                    { "Jeep", "Compass", "FR508HD", "€ 35750" }
+                };
+                Table table = OpenXmlWorldTools.CreaTabella(contenutoTabella, "center", "right", "red", "green", 380);
+                docBody.Append(table);
+
+                // test immagine
+                string imageUrl = "https://www.robinsonpetshop.it/news/cms2017/wp-content/uploads/2022/07/GattinoPrimiMesi.jpg";
+                Paragraph pImage = OpenXmlWorldTools.AggiungiImmagine(wordDocument, imageUrl, "center", 100, 100);
+                docBody.Append(pImage);
+                imageUrl = "https://png.pngtree.com/png-clipart/20230507/ourmid/pngtree-tiger-walking-wildlife-scene-transparent-background-png-image_7088126.png";
+                pImage = OpenXmlWorldTools.AggiungiImmagine(wordDocument, imageUrl, "right");
+                docBody.Append(pImage);
             }
         }
 
