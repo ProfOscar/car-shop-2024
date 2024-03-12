@@ -3,14 +3,17 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Color = DocumentFormat.OpenXml.Wordprocessing.Color;
 using JustificationValues = DocumentFormat.OpenXml.Wordprocessing.JustificationValues;
 
 namespace CarShop_Library
 {
-    public class OpenXmlTools
+    public class OpenXmlWorldTools
     {
         public static WordprocessingDocument CreaDocumento(string filePath)
         {
@@ -186,6 +189,40 @@ namespace CarShop_Library
 
             return list;
         }
+
+        public static Paragraph AggiungiImmagine(WordprocessingDocument wordprocessingDocument, string imgUrl, 
+            string position, int width = 0, int height = 0)
+        {
+            Paragraph paragraph = new Paragraph();
+            ImagePart imagePart = wordprocessingDocument.MainDocumentPart.AddImagePart(ImagePartType.Jpeg);
+
+            Image image = Image.FromStream(OpenXMLImageHelper.FromImageUrlToStream(imgUrl));
+            imagePart.FeedData(OpenXMLImageHelper.FromImageObjToStream(image));
+            // se width e/o height sono 0 utilizzo le dimensioni originali dell'immagine
+            int iWidth = width > 0 ? width * 9525 : image.Width * 9525;
+            int iHeight = height > 0 ? height * 9525 : image.Height * 9525;
+
+            Drawing drawing = OpenXMLImageHelper.DrawingManager(
+                wordprocessingDocument.MainDocumentPart.GetIdOfPart(imagePart),
+                "PicName", iWidth, iHeight, position);
+            Run run = new Run(drawing);
+            paragraph.Append(run);
+            return paragraph;
+        }
+
+        public static Hyperlink CreaHyperlink(WordprocessingDocument wordprocessingDocument, string url, string contenuto,
+            bool isGrassetto = false, bool isCorsivo = false, bool isSottolineato = false,
+            string colore = "000000", string fontFace = "Calibri", double fontSize = 11)
+        {
+            HyperlinkRelationship hyperlinkRelationship = wordprocessingDocument.MainDocumentPart.
+                AddHyperlinkRelationship(new Uri(url), true);
+            Hyperlink hyperlink = new Hyperlink(
+                    new ProofError() { Type = ProofingErrorValues.GrammarStart },
+                    CreaRun(contenuto, isGrassetto, isCorsivo, isSottolineato, colore, fontFace, fontSize)
+                ) { History = OnOffValue.FromBoolean(true), Id = hyperlinkRelationship.Id };
+            return hyperlink;
+        }
+
         #region Metodi privati
 
         private static void ModificaProprietaTabella(Table table, string giustificazione, string coloreBordi, int margine)
@@ -262,6 +299,7 @@ namespace CarShop_Library
             }
             return justificationValues;
         }
+
         #endregion
 
     }
