@@ -1,8 +1,4 @@
-﻿using CarShop_Library;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -10,6 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Excel = DocumentFormat.OpenXml.Spreadsheet;
+
+using CarShop_Library;
 
 namespace CarShop_Console
 {
@@ -51,6 +54,10 @@ namespace CarShop_Console
                     case 'W':
                         EsportaDocx();
                         break;
+                    case 'x':
+                    case 'X':
+                        EsportaXlsx();
+                        break;
                     default:
                         break;
                 }
@@ -88,6 +95,15 @@ namespace CarShop_Console
             string pgmDir = AppDomain.CurrentDomain.BaseDirectory;
             string filePath = $"{pgmDir}/{v.Targa}.docx";
             TestVolantinoDocx(filePath);
+            Process.Start(filePath);
+        }
+
+        private static void EsportaXlsx()
+        {
+            string pgmDir = AppDomain.CurrentDomain.BaseDirectory;
+            string now = DateTime.Now.ToShortDateString().Replace('/', '-');
+            string filePath = $"{pgmDir}/report_{now}.xlsx";
+            TestReportXlsx(filePath);
             Process.Start(filePath);
         }
 
@@ -131,6 +147,7 @@ namespace CarShop_Console
             Console.WriteLine("".PadLeft(34, '-'));
             Console.WriteLine("H - Crea Volantino HTML");
             Console.WriteLine("W - Crea Volantino DOCX");
+            Console.WriteLine("X - Crea Report XLSX");
             Console.WriteLine("".PadLeft(34, '-'));
             Console.WriteLine("Q - ESCI");
             return Console.ReadKey(true).KeyChar;
@@ -186,7 +203,7 @@ namespace CarShop_Console
 
         public static void TestVolantinoDocx(string filePath)
         {
-            using (WordprocessingDocument wordDocument = OpenXmlWorldTools.CreaDocumento(filePath))
+            using (WordprocessingDocument wordDocument = OpenXmlWordTools.CreaDocumento(filePath))
             {
                 // prendo un riferimento al body del documento
                 Body docBody = wordDocument.MainDocumentPart.Document.Body;
@@ -195,61 +212,61 @@ namespace CarShop_Console
                 string lorem = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet mauris in magna finibus, ut porttitor felis condimentum. Cras sed hendrerit ex. Sed porta dictum purus eu dictum. Donec hendrerit aliquet mollis. Maecenas volutpat lacus eu lorem porta, quis imperdiet nibh pharetra. Sed ac eros diam. Sed ex libero, commodo in iaculis nec, scelerisque in erat. Proin ultricies hendrerit volutpat. Vivamus porttitor, nibh in maximus gravida, enim arcu porta leo, ac porttitor enim elit vel sapien.";
 
                 // definisco stili
-                Style titolo1Style = OpenXmlWorldTools.CreaStile(wordDocument, "Mio Titolo 1", "center", "1100CC", "Comics Sans", 24, 80, 120);
-                Style titolo2Style = OpenXmlWorldTools.CreaStile(wordDocument, "Mio Titolo 2", "center", "AA5522", "Tahoma", 18, 60, 40);
-                Style codiceStyle = OpenXmlWorldTools.CreaStile(wordDocument, "Codice", "left", "CCCCCC", "Courier New", 10, 50, 100);
+                Style titolo1Style = OpenXmlWordTools.CreaStile(wordDocument, "Mio Titolo 1", "center", "1100CC", "Comics Sans", 24, 80, 120);
+                Style titolo2Style = OpenXmlWordTools.CreaStile(wordDocument, "Mio Titolo 2", "center", "AA5522", "Tahoma", 18, 60, 40);
+                Style codiceStyle = OpenXmlWordTools.CreaStile(wordDocument, "Codice", "left", "CCCCCC", "Courier New", 10, 50, 100);
 
                 // utilizzo stili
-                docBody.Append(OpenXmlWorldTools.CreaParagrafoConStile("Prova Mio Titolo 1", titolo1Style.StyleId));
-                docBody.Append(OpenXmlWorldTools.CreaParagrafoConStile("Prova Mio Titolo 2", titolo2Style.StyleId));
-                docBody.Append(OpenXmlWorldTools.CreaParagrafoConStile(lorem, codiceStyle.StyleId));
+                docBody.Append(OpenXmlWordTools.CreaParagrafoConStile("Prova Mio Titolo 1", titolo1Style.StyleId));
+                docBody.Append(OpenXmlWordTools.CreaParagrafoConStile("Prova Mio Titolo 2", titolo2Style.StyleId));
+                docBody.Append(OpenXmlWordTools.CreaParagrafoConStile(lorem, codiceStyle.StyleId));
 
                 // 3 paragrafi semplici con diversa giustificazione
-                docBody.Append(OpenXmlWorldTools.CreaParagrafo(lorem));
-                docBody.Append(OpenXmlWorldTools.CreaParagrafo(lorem, "center"));
-                docBody.Append(OpenXmlWorldTools.CreaParagrafo(lorem, "right"));
-                docBody.Append(OpenXmlWorldTools.CreaParagrafo(lorem, "distribute"));
+                docBody.Append(OpenXmlWordTools.CreaParagrafo(lorem));
+                docBody.Append(OpenXmlWordTools.CreaParagrafo(lorem, "center"));
+                docBody.Append(OpenXmlWordTools.CreaParagrafo(lorem, "right"));
+                docBody.Append(OpenXmlWordTools.CreaParagrafo(lorem, "distribute"));
 
                 // 1 paragrafo formattato in modo omogeneo
-                docBody.Append(OpenXmlWorldTools.CreaParagrafo(lorem, "left", false, true, false, "77FF33", "Tahoma", 15));
+                docBody.Append(OpenXmlWordTools.CreaParagrafo(lorem, "left", false, true, false, "77FF33", "Tahoma", 15));
 
                 // un paragrafo con il contenuto formattato nei diversi run
-                Paragraph p = OpenXmlWorldTools.CreaParagrafo("", "center");
-                Run r = OpenXmlWorldTools.CreaRun("Testo normale"); p.Append(r);
-                r = OpenXmlWorldTools.CreaRun("Testo grassetto", true); p.Append(r);
-                r = OpenXmlWorldTools.CreaRun("Testo corsivo", false, true); p.Append(r);
-                r = OpenXmlWorldTools.CreaRun("Testo sottolineato", false, false, true); p.Append(r);
-                r = OpenXmlWorldTools.CreaRun("Testo grassetto, corsivo, sottolineato, colorato", true, true, true, "993300"); p.Append(r);
+                Paragraph p = OpenXmlWordTools.CreaParagrafo("", "center");
+                Run r = OpenXmlWordTools.CreaRun("Testo normale"); p.Append(r);
+                r = OpenXmlWordTools.CreaRun("Testo grassetto", true); p.Append(r);
+                r = OpenXmlWordTools.CreaRun("Testo corsivo", false, true); p.Append(r);
+                r = OpenXmlWordTools.CreaRun("Testo sottolineato", false, false, true); p.Append(r);
+                r = OpenXmlWordTools.CreaRun("Testo grassetto, corsivo, sottolineato, colorato", true, true, true, "993300"); p.Append(r);
                 docBody.Append(p);
 
                 // paragrafo con font impostato nel run
-                p = OpenXmlWorldTools.CreaParagrafo();
-                r = OpenXmlWorldTools.CreaRun("Testo con font arial 34", false, false, false, "000000", "Arial", 34);
+                p = OpenXmlWordTools.CreaParagrafo();
+                r = OpenXmlWordTools.CreaRun("Testo con font arial 34", false, false, false, "000000", "Arial", 34);
                 p.Append(r);
                 docBody.Append(p);
 
                 // test hyperlink
-                Paragraph pHyperlink = OpenXmlWorldTools.CreaParagrafo();
+                Paragraph pHyperlink = OpenXmlWordTools.CreaParagrafo();
                 // Hyperlink hyperlink = OpenXmlTools.CreaHyperlink(wordDocument, "http://www.vallauri.edu", "Vai al sito del Vallauri");
-                Hyperlink hyperlink = OpenXmlWorldTools.CreaHyperlink(wordDocument, 
+                Hyperlink hyperlink = OpenXmlWordTools.CreaHyperlink(wordDocument,
                     "http://www.vallauri.edu", "Vai al sito del Vallauri",
                     false, false, true, "0000FF", "Tahoma", 32.5);
                 pHyperlink.Append(hyperlink);
                 docBody.Append(pHyperlink);
 
                 // test hyperlink in paragrafo allineato a destra
-                pHyperlink = OpenXmlWorldTools.CreaParagrafo("", "right");
-                hyperlink = OpenXmlWorldTools.CreaHyperlink(wordDocument, "http://www.vallauri.edu", "Vai al sito del Vallauri (allineato a destra)");
+                pHyperlink = OpenXmlWordTools.CreaParagrafo("", "right");
+                hyperlink = OpenXmlWordTools.CreaHyperlink(wordDocument, "http://www.vallauri.edu", "Vai al sito del Vallauri (allineato a destra)");
                 pHyperlink.Append(hyperlink);
                 docBody.Append(pHyperlink);
 
                 // test elenchi
                 string[] contenutoElenchi = { "BMW Serie 3", "Jeep Compass", "Mercedes CLA", "Fiat Panda" };
                 // elenco numerato
-                List<Paragraph> elenco = OpenXmlWorldTools.CreaElenco(contenutoElenchi, true);
+                List<Paragraph> elenco = OpenXmlWordTools.CreaElenco(contenutoElenchi, true);
                 foreach (var item in elenco) docBody.Append(item);
                 // elenco puntato
-                elenco = OpenXmlWorldTools.CreaElenco(contenutoElenchi, false);
+                elenco = OpenXmlWordTools.CreaElenco(contenutoElenchi, false);
                 foreach (var item in elenco) docBody.Append(item);
 
                 // test tabella
@@ -258,18 +275,52 @@ namespace CarShop_Console
                     { "BMW", "iX2", "GG528YT", "€ 57.800" },
                     { "Jeep", "Compass", "FR508HD", "€ 35750" }
                 };
-                Table table = OpenXmlWorldTools.CreaTabella(contenutoTabella, "center", "right", "red", "green", 380);
+                Table table = OpenXmlWordTools.CreaTabella(contenutoTabella, "center", "right", "red", "green", 380);
                 docBody.Append(table);
 
                 // test immagine
                 string imageUrl = "https://www.robinsonpetshop.it/news/cms2017/wp-content/uploads/2022/07/GattinoPrimiMesi.jpg";
-                Paragraph pImage = OpenXmlWorldTools.AggiungiImmagine(wordDocument, imageUrl, "center", 100, 100);
+                Paragraph pImage = OpenXmlWordTools.AggiungiImmagine(wordDocument, imageUrl, "center", 100, 100);
                 docBody.Append(pImage);
                 imageUrl = "https://png.pngtree.com/png-clipart/20230507/ourmid/pngtree-tiger-walking-wildlife-scene-transparent-background-png-image_7088126.png";
-                pImage = OpenXmlWorldTools.AggiungiImmagine(wordDocument, imageUrl, "right");
+                pImage = OpenXmlWordTools.AggiungiImmagine(wordDocument, imageUrl, "right");
                 docBody.Append(pImage);
             }
         }
 
+        public static void TestReportXlsx(string filePath)
+        {
+            string[] titolo = { "Prova Utilizzo OpenXmlExcelTools" };
+            string[,] datiDiTest =
+            {
+                { "Articolo", "Giacenza", "Prezzo" },
+                { "Cioccolata", "25.80", "12" },
+                { "Caffè", "148", "22" },
+                { "Pasta", "500", "7.50" }
+            };
+            SpreadsheetDocument reportDocument = OpenXmlExcelTools.CreaDocumento(filePath);
+            using (reportDocument)
+            {
+                Excel.SheetData sheetData = OpenXmlExcelTools.getFirstSheetData(reportDocument);
+                // riga di titolo
+                Excel.Row row = OpenXmlExcelTools.CreaRiga(titolo, true);
+                sheetData.Append(row);
+                // aggiungo una riga vuota
+                row = OpenXmlExcelTools.CreaRiga(); sheetData.Append(row);
+                // riga dell'header
+                row = OpenXmlExcelTools.CreaRiga();
+                for (int j = 0; j < datiDiTest.GetLength(1); j++)
+                    row.Append(OpenXmlExcelTools.CreaCella(datiDiTest[0, j], true, true));
+                sheetData.Append(row);
+                // righe dei dati   
+                for (int i = 1; i < datiDiTest.GetLength(0); i++)
+                {
+                    row = OpenXmlExcelTools.CreaRiga();
+                    for (int j = 0; j < datiDiTest.GetLength(1); j++)
+                        row.Append(OpenXmlExcelTools.CreaCella(datiDiTest[i, j], false, true));
+                    sheetData.Append(row);
+                }      
+            }
+        }
     }
 }

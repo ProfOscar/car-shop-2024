@@ -13,7 +13,7 @@ using JustificationValues = DocumentFormat.OpenXml.Wordprocessing.JustificationV
 
 namespace CarShop_Library
 {
-    public class OpenXmlWorldTools
+    public class OpenXmlWordTools
     {
         public static WordprocessingDocument CreaDocumento(string filePath)
         {
